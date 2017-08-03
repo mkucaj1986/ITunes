@@ -1,0 +1,24 @@
+{
+  "name": "gulp-browersync-amd",
+  "version": "1.0.0",
+  "description": "a development platform with gulp, broersync, requirejs",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "requirejs": "^2.3.3"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-include-source": "^0.0.5",
+    "gulp-remove-code": "^1.0.2",
+    "gulp-sequence": "^0.4.6"
+  },
+  "scripts": {
+    "dev": "gulp dev",
+    "build": "gulp build",
+    "preview": "gulp preview"
+  },
+  "author": "",
+  "license": "ISC"
+}
