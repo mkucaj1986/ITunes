@@ -5,6 +5,7 @@ define('router/LinkHandler', function() {
     class LinkHandler {
         constructor() {
             this.link = 'link';
+            this.navigatePath = this.navigatePath;
         }
 
         findLinks() {
@@ -13,10 +14,19 @@ define('router/LinkHandler', function() {
 
             links.forEach(link => {
                 link.addEventListener('click', function(e) {
-                    console.log('click');
+                    e.preventDefault();
+                    const location = e.target.getAttribute("path");
+                    vm.navigatePath(location);
                 });
             });
             console.log(links);
+        }
+
+        navigatePath(location) {
+            const _hash = '#';
+            return window.location.href = window.location.href
+                .replace(/#$/, '')
+                .replace(new RegExp(this._hash + '.*$'), '') + location;
         }
     }
 
