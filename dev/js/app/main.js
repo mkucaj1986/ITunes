@@ -4,7 +4,7 @@ require.config({
 });
 
 require(["router/RouterMain","home/HomeHeader", "home/homeSearch"], function(RouterMain, HomeHeader, homeSearch) {
-    RouterMain.init();
     HomeHeader.init();
+    RouterMain.init();
     homeSearch.init();
 });

@@ -9,7 +9,14 @@ define('router/LinkHandler', function() {
 
         findLinks() {
             var vm = this;
-            console.log('looking Links');
+            const links = document.querySelectorAll('router');
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    console.log('click');
+                });
+            });
+            console.log(links);
         }
     }
 
