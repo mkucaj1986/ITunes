@@ -10,7 +10,9 @@ body {
 }
 
 .App h1 {
+    display: block;
     text-align: center;
+    width: 100%;
 }
 
 .search-box-wrapp {

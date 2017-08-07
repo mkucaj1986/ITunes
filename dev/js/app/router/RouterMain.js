@@ -1,8 +1,9 @@
 /*jshint esversion: 6 */
 
 define('router/RouterMain', [
-    'router/LinkHandler'
-], function(LinkHandler) {
+    'router/LinkHandler',
+    'common/Navigation'
+], function(LinkHandler, Navigation) {
 
     class RouterMain {
         constructor() {
@@ -15,8 +16,20 @@ define('router/RouterMain', [
         }
 
         init() {
-            var vm = this;
+            const vm = this;
             LinkHandler.findLinks();
+
+            const xhr = new XMLHttpRequest();
+            const url = '/views/' + Navigation.navItems[0].name + '.html';
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    //do something with xhr.responseText
+                    document.querySelector('#App').innerHTML = xhr.response;
+                }
+            };
+            xhr.open('GET', url, false);
+            xhr.setRequestHeader('Content-Only', 1);
+            xhr.send();
         }
     }
 

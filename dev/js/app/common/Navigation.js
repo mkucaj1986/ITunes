@@ -1,23 +1,19 @@
 /*jshint esversion: 6 */
 
-define([
-
-], function() {
+define('common/Navigation', [
+    'config/Router'
+], function(Router) {
 
     class Navigation {
         constructor() {
             this.ulEl = document.createElement("ul");
 
-            this.navItems = [
-                'home',
-                'about',
-                'contact'
-            ];
+            this.navItems = Router.router;
         }
 
         init() {
             this.navItems.forEach(link => {
-                this.buildNav(link);
+                this.buildNav(link.name);
             });
         }
 
@@ -39,14 +35,8 @@ define([
             const liElement = document.querySelector('.' + linkName);
             liElement.appendChild(routerLink);
             routerLink.innerHTML = linkName;
-
-            if (linkName === 'home') {
-                href.value = 'index.html';
-                path.value = 'index';
-            } else {
-                href.value = linkName + '.html';
-                path.value = linkName;
-            }
+            href.value = linkName + '.html';
+            path.value = linkName;
             routerLink.setAttributeNode(path);
             routerLink.setAttributeNode(href);
             routerLink.setAttributeNode(iTuneRouter);
