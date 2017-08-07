@@ -10,7 +10,7 @@ define('router/LinkHandler', function() {
 
         findLinks() {
             var vm = this;
-            const links = document.querySelectorAll('router');
+            const links = document.querySelectorAll('[iTune-router]');
 
             links.forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -24,9 +24,9 @@ define('router/LinkHandler', function() {
 
         navigatePath(location) {
             const _hash = '#';
-            return window.location.href = window.location.href
+            return window.location.href = '/'
                 .replace(/#$/, '')
-                .replace(new RegExp(this._hash + '.*$'), '') + location;
+                .replace(new RegExp(this._hash + '.*$'), '') + location + '.html';
         }
     }
 

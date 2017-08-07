@@ -5,6 +5,6 @@ require.config({
 
 require(["router/RouterMain", "common/Navigation", "common/Header"], function(RouterMain, Navigation, AppHeader) {
     Navigation.init();
-    AppHeader.init('About Page');
+    AppHeader.init('Contact Page');
     RouterMain.init();
 });
