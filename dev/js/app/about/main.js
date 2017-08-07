@@ -3,8 +3,9 @@ require.config({
     waitSeconds: 10
 });
 
-require(["router/RouterMain","home/HomeHeader", "home/homeSearch"], function(RouterMain, HomeHeader, homeSearch) {
-    HomeHeader.init();
+require(["router/RouterMain", "common/Navigation", "common/Header"], function(RouterMain, Navigation, AppHeader) {
+    Navigation.init();
+    AppHeader.init('About Page');
     RouterMain.init();
     homeSearch.init();
 });

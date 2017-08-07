@@ -2,12 +2,10 @@
 
 define([
 
-], function($) {
+], function() {
 
-    class BuildHeader {
+    class Navigation {
         constructor() {
-            this.mainBox = document.querySelector("#App");
-            this.header = document.createElement("h1");
             this.ulEl = document.createElement("ul");
 
             this.navItems = [
@@ -18,7 +16,6 @@ define([
         }
 
         init() {
-            this.displayHeader('iTunes App Ready');
             this.navItems.forEach(link => {
                 this.buildNav(link);
             });
@@ -43,15 +40,8 @@ define([
             path.value = linkName;
             routerLink.setAttributeNode(path);
         }
-
-        displayHeader(headerTxt) {
-            const vm = this;
-            const App = document.querySelector(".App");
-            App.appendChild(vm.header);
-            vm.header.innerHTML = headerTxt;
-        }
     }
 
-    return new BuildHeader();
+    return new Navigation();
 
 });

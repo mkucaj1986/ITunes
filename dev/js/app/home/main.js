@@ -3,8 +3,9 @@ require.config({
     waitSeconds: 10
 });
 
-require(["router/RouterMain","home/HomeHeader", "home/homeSearch"], function(RouterMain, HomeHeader, homeSearch) {
-    HomeHeader.init();
+require(["router/RouterMain", "common/Navigation", "common/Header", "home/homeSearch"], function(RouterMain, Navigation, AppHeader, homeSearch) {
+    Navigation.init();
+    AppHeader.init('iTunes App Ready');
     RouterMain.init();
     homeSearch.init();
 });
