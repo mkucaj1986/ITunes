@@ -9,9 +9,9 @@ define([
             this.ulEl = document.createElement("ul");
 
             this.navItems = [
-                'Home',
-                'About',
-                'Contact'
+                'home',
+                'about',
+                'contact'
             ];
         }
 
