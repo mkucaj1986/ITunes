@@ -26,8 +26,44 @@ body {
     padding: 150px 0 0 0;
 }
 
-.search-box-wrapp input{
+.search-box-wrapp input {
     border: 1px solid #ccc;
     padding: 10px;
     min-width: 300px;
+}
+
+nav {
+    width: 100%;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+nav ul {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    list-style-type: none;
+}
+
+nav ul li {
+    cursor: pointer;
+    color: #ccc;
+    float:left;
+    margin: 0;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+}
+
+nav ul li router {
+    display: flex;
+}
+
+nav ul li:hover {
+    color: #000;
 }

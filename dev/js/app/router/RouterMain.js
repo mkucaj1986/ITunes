@@ -1,17 +1,22 @@
 /*jshint esversion: 6 */
 
-define([
-
-], function($) {
+define('router/RouterMain', [
+    'router/LinkHandler'
+], function(LinkHandler) {
 
     class RouterMain {
         constructor() {
             this.router = 'router Init';
+            this.Router = {
+                routes: [],
+                mode: null,
+                root: '/'
+            };
         }
 
         init() {
             var vm = this;
-            console.log(vm.router);
+            LinkHandler.findLinks();
         }
     }
 
