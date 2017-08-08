@@ -1,0 +1,23 @@
+<div id="App">
+  <header class="navbar navbar-default navbar-fixed-top" role="banner">
+    <div class="container">
+      <nav class="collapse navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li {{#if model.routes.api.active}}class="active"{{/if}}><a href="#/" class="navbar-brand">Home</a></li>
+          <li {{#if model.routes.api.active}}class="active"{{/if}}><a href="#/about">About</a></li>
+          <li {{#if model.routes.examples.active}}class="active"{{/if}}><a href="#/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <component name="content-placeholder"></component>
+  </main>
+</div>
+
+<footer id="main-footer">
+  <div class="container">
+    <p class="text-muted text-center">Layout Footer</p>
+  </div>
+</footer>
