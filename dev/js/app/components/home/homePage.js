@@ -7,7 +7,6 @@ define('js/app/components/home/homePage', [], function() {
         }
 
         init() {
-        	console.log('ok');
         	const link = document.querySelector('.search-btn');
         	link.addEventListener('click', function(e) {
         	    e.preventDefault();

@@ -30,7 +30,11 @@ define('js/app/router/LinkHandler', [
         }
 
         navigatePath(location, config) {
-            window.location.href = '#/' + location;
+            if (location !== 'home') {
+                window.location.href = '#/' + location;
+            }else{
+                window.location.href = '#/';
+            }
             if (config.routes.length > 0) {
                 for (let i in config.routes) {
                     if (config.routes.hasOwnProperty(i)) {
@@ -41,8 +45,7 @@ define('js/app/router/LinkHandler', [
                             const routeReady = LoadRoute.loadRoute(routePath, path);
                             if (routeReady) {
                                 const url = config.componentsPath + '/' + location + '/' + location + '.html';
-                                GetPartials.fetchHtml(url);
-                                GetPartials.initModule(route);
+                                GetPartials.fetchHtml(url, route);
                             }
                         }
                     }

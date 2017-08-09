@@ -15,6 +15,4 @@ require(['js/lib/domReady', "js/app/config/RouterConfig" , "js/app/router/Router
     domReady(function() {
         console.log('dom are ready');
     });
-
-    console.log('init app');
 });
