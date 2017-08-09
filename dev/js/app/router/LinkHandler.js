@@ -2,8 +2,9 @@
 
 define('js/app/router/LinkHandler', [
     'js/app/common/Navigation',
-    'js/app/common/GetHTML'
-], function(Navigation, GetPartials) {
+    'js/app/common/GetHTML',
+    'js/app/config/RouterConfig'
+], function(Navigation, GetPartials, config) {
 
     class LinkHandler {
         constructor() {
@@ -12,7 +13,7 @@ define('js/app/router/LinkHandler', [
         }
 
         findLinks() {
-            var vm = this;
+            const vm = this;
             const links = document.querySelectorAll('[iTune-router]');
 
             if (links.length) {
@@ -20,21 +21,22 @@ define('js/app/router/LinkHandler', [
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const location = e.target.getAttribute("path");
-                        vm.navigatePath(location);
+                        vm.navigatePath(location, config);
                     });
                 });
             }
         }
 
-        navigatePath(location) {
+        navigatePath(location, config) {
             const xhr = new XMLHttpRequest();
-            const url = '/views/' + location + '.html';
+            const url = config.componentsPath + '/' + location + '/' + location + '.html';
+
             if (window.history.replaceState) {
                 //prevents browser from storing history with each change:
                 if (Navigation.navItems[0].name === location) {
                     window.history.pushState({}, location, '/');
                 } else {
-                    window.history.pushState({}, location, location);
+                    window.history.pushState({}, location, '#/' + location);
                 }
             }
 

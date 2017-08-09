@@ -8,14 +8,14 @@ define('js/app/common/GetHTML', [], function() {
         }
 
         fetchHtml(url) {
-            var myHeaders = new Headers();
-            var myInit = {
+            const myHeaders = new Headers();
+            const myInit = {
                 method: 'GET',
                 headers: myHeaders,
             };
             myHeaders.set("Content-Type", "text/html");
 
-            var myRequest = new Request(url, myInit);
+            const myRequest = new Request(url, myInit);
 
             fetch(myRequest)
                 .then(function(response) {

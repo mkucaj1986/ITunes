@@ -1,14 +1,14 @@
 /*jshint esversion: 6 */
 
 define('js/app/common/Navigation', [
-    'js/app/config/Router'
-], function(Router) {
+    'js/app/config/RouterConfig'
+], function(RouterConfig) {
 
     class Navigation {
         constructor() {
             this.ulEl = document.createElement("ul");
 
-            this.navItems = Router.router;
+            this.navItems = RouterConfig.routes;
         }
 
         init() {

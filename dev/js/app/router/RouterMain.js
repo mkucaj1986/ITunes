@@ -2,9 +2,12 @@
 
 define('js/app/router/RouterMain', [
     'js/app/router/LinkHandler',
+    'js/app/router/TestRoute',
+    'js/app/router/LoadRoute',
+    'js/app/router/RegisterRoutes',
     'js/app/common/Navigation',
     'js/app/common/GetHTML'
-], function(LinkHandler, Navigation, GetPartials) {
+], function(LinkHandler, TestRoute, LoadRoute, RegisterRoutes, Navigation, GetPartials) {
 
     class RouterMain {
         constructor() {
@@ -12,15 +15,41 @@ define('js/app/router/RouterMain', [
             this.Router = {
                 routes: [],
                 mode: null,
-                root: '/'
+                root: '/',
+                registerRoute: RegisterRoutes.registerRoute,
+                loadRoute: LoadRoute.loadRoute,
+                testRoute: TestRoute.testRoute,
             };
         }
 
-        init() {
-            const vm = this;
-            const url = '/views/' + Navigation.navItems[0].name + '.html';
+        init(config) {
+            const routes = config.routes;
+
             LinkHandler.findLinks();
-            GetPartials.fetchHtml(url);
+            this.Router.routes = this.Router.registerRoute(routes);
+
+            if (this.Router.routes.length > 0) {
+                for (let i in this.Router.routes) {
+                    if (this.Router.routes.hasOwnProperty(i)) {
+                        const route = this.Router.routes[i];
+                        const routePath = route.path;
+                        const path = this.Router.testRoute(route);
+                        const routeReady = this.Router.loadRoute(routePath, path);
+                        if (routeReady) {
+                            const url = route.component + '/' + route.name + '.html';
+                            GetPartials.fetchHtml(url);
+                        }
+                    }
+                }
+            }
+            // if(window.location.hash === )
+            // RegisterRoutes.init();
+            // LoadRoute.init();
+            // GetPartials.fetchHtml(url);
+        }
+
+        urlHref() {
+            console.log('123');
         }
     }
 
