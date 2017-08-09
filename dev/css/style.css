@@ -53,7 +53,7 @@ nav ul {
 nav ul li {
     cursor: pointer;
     color: #aaa;
-    float:left;
+    float: left;
     margin: 0 15px;
     -o-transition: .5s;
     -ms-transition: .5s;
@@ -67,5 +67,21 @@ nav ul li router {
 }
 
 nav ul li:hover {
+    color: #000;
+}
+
+.search-btn {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #fff;
+    cursor:pointer;
+    padding: 9px 35px;
+    -webkit-transition:all .35s;
+    /* Safari */
+    transition: all .35s;
+}
+
+.search-btn:hover {
+    background-color: #aaa;
     color: #000;
 }

@@ -19,9 +19,9 @@ define('js/app/router/LinkHandler', [
             if (links.length) {
                 links.forEach(link => {
                     link.addEventListener('click', function(e) {
-                        e.preventDefault();
                         const location = e.target.getAttribute("path");
                         vm.navigatePath(location, config);
+                        e.preventDefault();
                     });
                 });
             }
