@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-define('config/Router', function() {
+define('js/app/config/Router', function() {
 
     class Router {
         constructor() {

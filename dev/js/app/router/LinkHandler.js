@@ -1,8 +1,9 @@
 /*jshint esversion: 6 */
 
-define('router/LinkHandler', [
-    'common/Navigation'
-], function(Navigation) {
+define('js/app/router/LinkHandler', [
+    'js/app/common/Navigation',
+    'js/app/common/GetHTML'
+], function(Navigation, GetPartials) {
 
     class LinkHandler {
         constructor() {
@@ -37,15 +38,7 @@ define('router/LinkHandler', [
                 }
             }
 
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    //do something with xhr.responseText
-                    document.querySelector('#App').innerHTML = xhr.response;
-                }
-            };
-            xhr.open('GET', url, false);
-            xhr.setRequestHeader('Content-Only', 1);
-            xhr.send();
+            GetPartials.fetchHtml(url);
         }
     }
 

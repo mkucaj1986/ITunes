@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
-define('common/Navigation', [
-    'config/Router'
+define('js/app/common/Navigation', [
+    'js/app/config/Router'
 ], function(Router) {
 
     class Navigation {
