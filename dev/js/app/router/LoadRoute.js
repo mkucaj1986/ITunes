@@ -8,7 +8,7 @@ define('js/app/router/LoadRoute', [], function() {
         }
 
         loadRoute(routePath, path) {
-            if(routePath === path){
+            if (routePath === path) {
                 return true;
             }
         }

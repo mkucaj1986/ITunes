@@ -38,6 +38,7 @@ define('js/app/router/RouterMain', [
                         if (routeReady) {
                             const url = route.component + '/' + route.name + '.html';
                             GetPartials.fetchHtml(url);
+                            GetPartials.initModule(route);
                         }
                     }
                 }

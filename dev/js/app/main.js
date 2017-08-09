@@ -4,7 +4,7 @@ require.config({
     waitSeconds: 10
 });
 
-require(['js/lib/domReady', "js/app/config/RouterConfig" , "js/app/router/RouterMain", "js/app/common/Navigation", "js/app/common/GetHTML"], function(domReady, RouterConfig, RouterMain, Navigation, GetHTML) {
+require(['js/lib/domReady', "js/app/config/RouterConfig" , "js/app/router/RouterMain", "js/app/common/Navigation"], function(domReady, RouterConfig, RouterMain, Navigation) {
 	const config = {
 		routes: RouterConfig.routes,
 		components: RouterConfig.componentsPath
