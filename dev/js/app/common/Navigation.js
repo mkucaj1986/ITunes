@@ -13,11 +13,11 @@ define('js/app/common/Navigation', [
 
         init() {
             this.navItems.forEach(link => {
-                this.buildNav(link.name);
+                this.buildNav(link.name, link.path);
             });
         }
 
-        buildNav(linkName) {
+        buildNav(linkName, pathName) {
             const vm = this;
             const Nav = document.querySelector("#Nav");
             const listEl = document.createElement("li");
@@ -36,7 +36,7 @@ define('js/app/common/Navigation', [
             liElement.appendChild(routerLink);
             routerLink.innerHTML = linkName;
             href.value = linkName + '.html';
-            path.value = linkName;
+            path.value = pathName;
             routerLink.setAttributeNode(path);
             routerLink.setAttributeNode(href);
             routerLink.setAttributeNode(iTuneRouter);
