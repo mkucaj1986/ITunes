@@ -10,8 +10,8 @@ define('js/app/router/LinkHandler', [
 
     class LinkHandler {
         constructor() {
-            this.link = 'link';
             this.navigatePath = this.navigatePath;
+            this.findLinks = this.findLinks;
         }
 
         findLinks() {
@@ -22,29 +22,32 @@ define('js/app/router/LinkHandler', [
                 links.forEach(link => {
                     link.addEventListener('click', function(e) {
                         const location = e.target.getAttribute("path");
-                        vm.navigatePath(location, config);
                         e.preventDefault();
+                        vm.navigatePath(location, config);
                     });
                 });
             }
         }
 
         navigatePath(location, config) {
-            if (location !== 'home') {
-                window.location.href = '#/' + location;
-            }else{
-                window.location.href = '#/';
+            // use 
+            // window.history.pushState({}, location, location);
+            // with server configuration to force serve all with index.html
+            
+            if (window.history.replaceState) {
+                window.history.pushState({}, location, '#' + location);
             }
+
             if (config.routes.length > 0) {
                 for (let i in config.routes) {
                     if (config.routes.hasOwnProperty(i)) {
-                        if (config.routes[i].name === location) {
+                        if (config.routes[i].path === location) {
                             const route = config.routes[i];
                             const routePath = route.path;
                             const path = TestRoute.testRoute(route);
                             const routeReady = LoadRoute.loadRoute(routePath, path);
                             if (routeReady) {
-                                const url = config.componentsPath + '/' + location + '/' + location + '.html';
+                                const url = config.componentsPath + '/' + config.routes[i].name + '/' + config.routes[i].name + '.html';
                                 GetPartials.fetchHtml(url, route);
                             }
                         }
@@ -52,14 +55,7 @@ define('js/app/router/LinkHandler', [
                 }
             }
 
-            if (window.history.replaceState) {
-                //prevents browser from storing history with each change:
-                if (Navigation.navItems[0].name === location) {
-                    window.history.pushState({}, location, '/');
-                } else {
-                    window.history.pushState({}, location, '#/' + location);
-                }
-            }
+
 
         }
     }

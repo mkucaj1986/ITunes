@@ -2,9 +2,7 @@
 define('js/app/common/GetHTML', [], function() {
     class GetPartials {
         constructor() {
-            this.html = '';
             this.initModule = this.initModule;
-            this.route = '';
         }
         initModule(route) {
             const moduleName = route.component + '/' + route.moduleName;
@@ -21,7 +19,6 @@ define('js/app/common/GetHTML', [], function() {
             };
             myHeaders.set("Content-Type", "text/html");
             const myRequest = new Request(url, myInit);
-            this.route = route;
             fetch(myRequest)
                 .then(function(response) {
                     return response.text();

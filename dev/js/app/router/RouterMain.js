@@ -11,7 +11,6 @@ define('js/app/router/RouterMain', [
 
     class RouterMain {
         constructor() {
-            this.router = 'router Init';
             this.Router = {
                 routes: [],
                 mode: null,
@@ -42,15 +41,9 @@ define('js/app/router/RouterMain', [
                     }
                 }
             }
-            // if(window.location.hash === )
-            // RegisterRoutes.init();
-            // LoadRoute.init();
-            // GetPartials.fetchHtml(url);
+
         }
 
-        urlHref() {
-            console.log('123');
-        }
     }
 
     return new RouterMain();
