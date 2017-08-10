@@ -74,9 +74,9 @@ nav ul li:hover {
     background-color: #ccc;
     border: 1px solid #aaa;
     color: #fff;
-    cursor:pointer;
+    cursor: pointer;
     padding: 9px 35px;
-    -webkit-transition:all .35s;
+    -webkit-transition: all .35s;
     /* Safari */
     transition: all .35s;
 }
@@ -84,4 +84,43 @@ nav ul li:hover {
 .search-btn:hover {
     background-color: #aaa;
     color: #000;
+}
+
+.itubes-container {
+    display: block;
+    margin: 0 auto;
+    padding: 30px 0;
+    width: 1350px;
+}
+
+.itubes-container th,
+.itubes-container td {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    font-size: 13px;
+    padding: 0 12px;
+}
+
+.itubes-container th {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.itubes-container td {
+    border-bottom: 1px solid #ccc;
+}
+
+.App h2 {
+    text-align: center;
+    color: red;
+}
+
+.total-songs {
+    color: blue;
+    display: none;
+    padding: 10px;
+}
+
+.total-songs span {
+    color: green;
 }

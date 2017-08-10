@@ -7,7 +7,6 @@ define('js/app/common/Navigation', [
     class Navigation {
         constructor() {
             this.ulEl = document.createElement("ul");
-
             this.navItems = RouterConfig.routes;
         }
 

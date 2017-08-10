@@ -42,7 +42,7 @@ gulp.task('serve', function () {
   gulp.watch([
     "./dev/js/**/*.js",
     "./dev/css/*css",
-    "./dev/views/*html",
+    "./dev/js/app/**/*.html",
     "./dev/*html",
   ], ['reource-watch']);
 });
