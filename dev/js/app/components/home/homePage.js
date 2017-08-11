@@ -4,7 +4,7 @@ define('js/app/components/home/homePage', [], function() {
 
     class homePage {
         constructor() {
-            this.searchUrl = "https://itunes.apple.com/search?limit=100&term=";
+            this.searchUrl = "https://itunes.apple.com/search?limit=200&term=";
             this.myHeaders = new Headers();
             this.myRequestInit = {
                 method: 'GET',
@@ -46,6 +46,7 @@ define('js/app/components/home/homePage', [], function() {
             if (value === '') {
                 vm.noResults('Please type what you are looking');
             } else {
+                vm.displaySpinner(true);
                 fetch(myRequest)
                     .then(function(response) {
                         return response.json();
@@ -55,12 +56,14 @@ define('js/app/components/home/homePage', [], function() {
                         const songsNumber = songs.resultCount;
                         if (songsNumber > 0) {
                             songs = songs.results;
+                            vm.displaySpinner(false);
                             vm.showTotalSongs(true, songsNumber);
                             songs.forEach(function(song, index) {
                                 vm.buildTableRow(index);
                                 vm.displayResults(song, index);
                             });
                         } else {
+                            vm.displaySpinner(false);
                             vm.noResults('No Results Found');
                             vm.showTotalSongs(false);
                         }
@@ -151,6 +154,11 @@ define('js/app/components/home/homePage', [], function() {
             const totalSongsItems = document.querySelector('.total-songs-items');
             totalSongs.style.display = show ? 'block' : 'none';
             totalSongsItems.innerHTML = counts;
+        }
+
+         displaySpinner(display) {
+            const spinner = document.querySelector('.iTune-Spinner');
+            spinner.style.display = display ? 'block' : 'none';
         }
     }
 
