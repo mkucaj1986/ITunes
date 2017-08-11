@@ -43,43 +43,47 @@ define('js/app/components/home/homePage', [], function() {
             const myRequest = new Request(url, this.myRequestInit);
 
             vm.clearContent();
+            if (value === '') {
+                vm.noResults('Please type what you are looking');
+            } else {
+                fetch(myRequest)
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(songs) {
+                        console.log(songs);
+                        const songsNumber = songs.resultCount;
+                        if (songsNumber > 0) {
+                            songs = songs.results;
+                            vm.showTotalSongs(true, songsNumber);
+                            songs.forEach(function(song, index) {
+                                vm.buildTableRow(index);
+                                vm.displayResults(song, index);
+                            });
+                        } else {
+                            vm.noResults('No Results Found');
+                            vm.showTotalSongs(false);
+                        }
 
-            fetch(myRequest)
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(songs) {
-                    console.log(songs);
-                    const songsNumber = songs.resultCount;
-                    if (songsNumber > 0) {
-                        songs = songs.results;
-                        vm.showTotalSongs(true, songsNumber);
-                        songs.forEach(function(song, index) {
-                            vm.buildTableRow(index);
-                            vm.displayResults(song, index);
-                        });
-                    } else {
-                        vm.noResults();
-                        vm.showTotalSongs(false);
-                    }
-
-                }).catch(function(err) {
-                    // error handler
-                    console.log(err);
-                });
-
+                    }).catch(function(err) {
+                        // error handler
+                        console.log(err);
+                    });
+            }
         }
 
         buildTableRow(index) {
             const vm = this;
             const tableHeader = document.querySelector('.table-header');
+            const songTable = document.querySelector('.song-table');
             const html = '<td class="song-index"></td><td class="artist-name"></td><td class="album"></td><td class="song-name"></td><td class="preview"><a href="" target="_blank">Preview</a></td><td class="listen"><a href="" target="_blank">Liten</a></td>';
             const row = document.createElement('tr');
-            index = index - 1;
+            songTable.style.display = 'block';
             row.classList.add('table-row');
             row.innerHTML = html;
             if (tableHeader.nextElementSibling !== null) {
                 let tableRow = document.querySelectorAll('.table-row');
+                index = index - 1;
                 tableRow = tableRow[index];
                 vm.insertAfter(row, tableRow);
             } else {
@@ -91,17 +95,30 @@ define('js/app/components/home/homePage', [], function() {
             referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
         }
 
-        noResults() {
+        noResults(msg) {
             const app = document.querySelector('#App');
             const noReulstsBox = document.createElement('h2');
+            const songTable = document.querySelector('.song-table');
             noReulstsBox.classList.add('no-results-found');
-            noReulstsBox.innerHTML = 'No Results Found';
+            noReulstsBox.classList.add('fadeOut');
+            noReulstsBox.innerHTML = msg;
             app.appendChild(noReulstsBox);
+            songTable.style.display = 'none';
+            noReulstsBox.style.display = 'block';
+            setTimeout(function() {
+                noReulstsBox.style.display = 'none';
+                noReulstsBox.remove();
+            }, 2400);
         }
 
         clearContent() {
             const noReulstsBox = document.querySelector('.no-results-found');
             const tableHeader = document.querySelector('.table-header');
+            const songTable = document.querySelector('.song-table');
+            const totalSongs = document.querySelector('.total-songs');
+
+            songTable.style.display = 'none';
+            totalSongs.style.display = 'none';
             if (noReulstsBox !== null) {
                 document.querySelector('.no-results-found').remove();
             }

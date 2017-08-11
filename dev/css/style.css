@@ -5,6 +5,13 @@ body {
     background: #ffffff;
 }
 
+a:focus,
+a:hover {
+    color: #ff7726;
+    outline: 0;
+    text-decoration: none;
+}
+
 .App {
     margin: 50px 0 0 0;
 }
@@ -62,7 +69,7 @@ nav ul li {
     transition: .5s;
 }
 
-nav ul li router {
+nav ul li {
     display: flex;
 }
 
@@ -71,19 +78,20 @@ nav ul li:hover {
 }
 
 .search-btn {
-    background-color: #ccc;
+    background-color: #ff7726;
     border: 1px solid #aaa;
     color: #fff;
     cursor: pointer;
-    padding: 9px 35px;
+    outline: 0;
+    padding: 10px 35px;
     -webkit-transition: all .35s;
     /* Safari */
     transition: all .35s;
 }
 
 .search-btn:hover {
-    background-color: #aaa;
-    color: #000;
+    background-color: #ff7726;
+    color: #ccc;
 }
 
 .itubes-container {
@@ -110,6 +118,10 @@ nav ul li:hover {
     border-bottom: 1px solid #ccc;
 }
 
+.song-table {
+    display: none;
+}
+
 .App h2 {
     text-align: center;
     color: red;
@@ -123,4 +135,31 @@ nav ul li:hover {
 
 .total-songs span {
     color: green;
+}
+
+.fadeOut {
+    animation-name: fadeOut;
+    -webkit-animation-name: fadeOut;
+    animation-duration: 2.5s;
+    -webkit-animation-duration: 2.5s;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
