@@ -8,7 +8,7 @@ define('js/app/components/home/homePage', [], function() {
             this.myHeaders = new Headers();
             this.myRequestInit = {
                 method: 'GET',
-                headers: this.myHeaders,
+                headers: this.myHeaders
             };
         }
 
@@ -19,7 +19,7 @@ define('js/app/components/home/homePage', [], function() {
 
         addEventListeners() {
             const vm = this;
-            const link = document.querySelector('.search-btn');
+            const searchBtn = document.querySelector('.search-btn');
             window.addEventListener('keydown', function(e) {
                 var key = e.which || e.keyCode;
                 if (key === 13) { // 13 is enter
@@ -29,7 +29,7 @@ define('js/app/components/home/homePage', [], function() {
                 }
             });
 
-            link.addEventListener('click', function(e) {
+            searchBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 vm.search();
             });

@@ -12,7 +12,6 @@ require(['js/app/common/redux/index', 'js/lib/domReady', "js/app/config/RouterCo
 
     Navigation.init();
     RouterMain.init(config);
-    debugger;   
     domReady(function() {
         console.log('dom are ready');
     });
