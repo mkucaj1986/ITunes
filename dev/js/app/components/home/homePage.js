@@ -38,6 +38,13 @@ define('js/app/components/home/homePage', [], function() {
             songLimitBtn.addEventListener('input', function(evt) {
                 vm.changeSongLimit(evt, this.value);
             });
+
+            window.onpopstate = function(event) {
+                // vm.init();
+                var currentState = history.state;
+                var numberOfEntries = window.history.length;
+                debugger;
+            };
         }
         changeSongLimit(e, songLimit) {
             const vm = this;
@@ -153,9 +160,6 @@ define('js/app/components/home/homePage', [], function() {
             const songTable = document.querySelector('.song-table');
             noReulstsBox.classList.add('no-results-found');
             noReulstsBox.classList.add('fadeOut');
-            if (noReulstsBox.length) {
-                debugger;
-            }
             noReulstsBox.innerHTML = msg;
             app.appendChild(noReulstsBox);
             songTable.style.display = 'none';
@@ -213,7 +217,7 @@ define('js/app/components/home/homePage', [], function() {
                 searchParams.set("limit", songLimit);
                 searchParams.set("term", term);
                 url = '/?' + searchParams.toString();
-                window.history.pushState({}, '', url);
+                window.history.pushState(window.location.pathname, window.location.pathname, url);
             }
         }
 

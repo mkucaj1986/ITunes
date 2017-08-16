@@ -31,12 +31,12 @@ define('js/app/router/LinkHandler', [
 
         navigatePath(location, config) {
             // use 
-            // window.history.pushState({}, location, location);
+            // window.history.pushState(location, location, location);
             // with server configuration to force serve all with index.html
-            window.history.pushState({}, '', window.location.pathname);
+            window.history.pushState(location, location, window.location.pathname);
 
             if (window.history.replaceState) {
-                window.history.pushState({}, location, '#' + location);
+                window.history.pushState(location, location, '#' + location);
             }
 
             if (config.routes.length > 0) {
