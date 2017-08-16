@@ -3,7 +3,7 @@ define('js/app/components/home/homePage', [], function() {
     class homePage {
         constructor() {
             this.searchUrl = "https://itunes.apple.com/search?";
-            this.songsLimit = '200';
+            this.songsLimit = '50';
             this.value = '';
             this.url = '';
             this.myRequest = {};
@@ -15,12 +15,13 @@ define('js/app/components/home/homePage', [], function() {
         }
         init() {
             const vm = this;
-            vm.addEventListeners();
             vm.checkUrl();
+            vm.addEventListeners();
         }
         addEventListeners() {
             const vm = this;
             const searchBtn = document.querySelector('.search-btn');
+            const songLimitBtn = document.querySelector('#song-limit');
             window.addEventListener('keydown', function(e) {
                 var key = e.which || e.keyCode;
                 if (key === 13) { // 13 is enter
@@ -33,16 +34,61 @@ define('js/app/components/home/homePage', [], function() {
                 e.preventDefault();
                 vm.search();
             });
+            songLimitBtn.value = vm.songsLimit;
+            songLimitBtn.addEventListener('input', function(evt) {
+                vm.changeSongLimit(evt, this.value);
+            });
+        }
+        changeSongLimit(e, songLimit) {
+            const vm = this;
+            let defaultSongsLimit = '200';
+            const songLimitBtn = document.querySelector('#song-limit');
+            const checkIsNumber = (n) => {
+                return !isNaN(parseFloat(n)) && isFinite(n);
+            };
+            const changeToNumber = (number) => {
+                return Number(number);
+            };
+            const isNumber = checkIsNumber(songLimit);
+
+            if (isNumber) {
+                if (songLimit === '0') {
+                    vm.songsLimit = '1';
+                    songLimitBtn.value = '1';
+                } else {
+                    vm.songsLimit = songLimit;
+                }
+            } else {
+                if (songLimit === '') {
+                    songLimitBtn.value = '';
+                    vm.songsLimit = '200';
+                } else {
+                    vm.displayMessage('Not a number');
+                }
+            }
+
+            songLimit = changeToNumber(songLimit);
+            defaultSongsLimit = changeToNumber(defaultSongsLimit);
+            if (songLimit > defaultSongsLimit) {
+                vm.songsLimit = '200';
+                songLimitBtn.value = vm.songsLimit;
+                vm.clearContent();
+                vm.displayMessage('200 is Max of SongsLimit');
+            }
         }
         search() {
             const vm = this;
             const searchInput = document.querySelector('.search-input');
+            const songLimitBtn = document.querySelector('#song-limit');
             vm.value = searchInput.value;
             const url = vm.searchUrl + 'limit=' + vm.songsLimit + '&term=' + vm.value;
             vm.myRequest = new Request(url, this.myRequestInit);
             vm.clearContent();
+            if (songLimitBtn.value === '') {
+                songLimitBtn.value = '200';
+            }
             if (vm.value === '') {
-                vm.noResults('Please type what you are looking');
+                vm.displayMessage('Please type what you are looking');
             } else {
                 vm.displaySpinner(true);
                 vm.fetchData(vm.myRequest, vm.songsLimit, vm.value);
@@ -68,7 +114,7 @@ define('js/app/components/home/homePage', [], function() {
                         });
                     } else {
                         vm.displaySpinner(false);
-                        vm.noResults('No Results Found');
+                        vm.displayMessage('No Results Found');
                         vm.showTotalSongs(false);
                     }
                 }).catch(function(err) {
@@ -101,7 +147,7 @@ define('js/app/components/home/homePage', [], function() {
                 referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
             }
         }
-        noResults(msg) {
+        displayMessage(msg) {
             const app = document.querySelector('#App');
             const noReulstsBox = document.createElement('h2');
             const songTable = document.querySelector('.song-table');
@@ -176,6 +222,7 @@ define('js/app/components/home/homePage', [], function() {
             if (window.location.search !== '' && 'URLSearchParams' in window) {
                 const searchParams = new URLSearchParams(window.location.search);
                 vm.value = searchParams.get("term");
+                vm.songsLimit = searchParams.get("limit");
                 const url = vm.searchUrl + 'limit=' + vm.songsLimit + '&term=' + vm.value;
                 vm.myRequest = new Request(url, this.myRequestInit);
                 vm.fetchData(vm.myRequest, vm.songsLimit, vm.value);
