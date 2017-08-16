@@ -33,7 +33,8 @@ define('js/app/router/LinkHandler', [
             // use 
             // window.history.pushState({}, location, location);
             // with server configuration to force serve all with index.html
-            
+            window.history.pushState({}, '', window.location.pathname);
+
             if (window.history.replaceState) {
                 window.history.pushState({}, location, '#' + location);
             }

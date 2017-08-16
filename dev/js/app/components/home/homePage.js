@@ -1,22 +1,23 @@
 /*jshint esversion: 6 */
-
 define('js/app/components/home/homePage', [], function() {
-
     class homePage {
         constructor() {
-            this.searchUrl = "https://itunes.apple.com/search?limit=200&term=";
+            this.searchUrl = "https://itunes.apple.com/search?";
+            this.songsLimit = '200';
+            this.value = '';
+            this.url = '';
+            this.myRequest = {};
             this.myHeaders = new Headers();
             this.myRequestInit = {
                 method: 'GET',
                 headers: this.myHeaders
             };
         }
-
         init() {
             const vm = this;
             vm.addEventListeners();
+            vm.checkUrl();
         }
-
         addEventListeners() {
             const vm = this;
             const searchBtn = document.querySelector('.search-btn');
@@ -28,53 +29,53 @@ define('js/app/components/home/homePage', [], function() {
                     vm.search();
                 }
             });
-
             searchBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 vm.search();
             });
         }
-
         search() {
             const vm = this;
             const searchInput = document.querySelector('.search-input');
-            const value = searchInput.value;
-            const url = vm.searchUrl + value;
-            const myRequest = new Request(url, this.myRequestInit);
-
+            vm.value = searchInput.value;
+            const url = vm.searchUrl + 'limit=' + vm.songsLimit + '&term=' + vm.value;
+            vm.myRequest = new Request(url, this.myRequestInit);
             vm.clearContent();
-            if (value === '') {
+            if (vm.value === '') {
                 vm.noResults('Please type what you are looking');
             } else {
                 vm.displaySpinner(true);
-                fetch(myRequest)
-                    .then(function(response) {
-                        return response.json();
-                    })
-                    .then(function(songs) {
-                        console.log(songs);
-                        const songsNumber = songs.resultCount;
-                        if (songsNumber > 0) {
-                            songs = songs.results;
-                            vm.displaySpinner(false);
-                            vm.showTotalSongs(true, songsNumber);
-                            songs.forEach(function(song, index) {
-                                vm.buildTableRow(index);
-                                vm.displayResults(song, index);
-                            });
-                        } else {
-                            vm.displaySpinner(false);
-                            vm.noResults('No Results Found');
-                            vm.showTotalSongs(false);
-                        }
-
-                    }).catch(function(err) {
-                        // error handler
-                        console.log(err);
-                    });
+                vm.fetchData(vm.myRequest, vm.songsLimit, vm.value);
             }
         }
-
+        fetchData(request, songsLimit, value) {
+            const vm = this;
+            fetch(request)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(songs) {
+                    console.log(songs);
+                    const songsNumber = songs.resultCount;
+                    if (songsNumber > 0) {
+                        songs = songs.results;
+                        vm.buildUrl(songsLimit, value);
+                        vm.displaySpinner(false);
+                        vm.showTotalSongs(true, songsNumber);
+                        songs.forEach(function(song, index) {
+                            vm.buildTableRow(index);
+                            vm.displayResults(song, index);
+                        });
+                    } else {
+                        vm.displaySpinner(false);
+                        vm.noResults('No Results Found');
+                        vm.showTotalSongs(false);
+                    }
+                }).catch(function(err) {
+                    // error handler
+                    console.log(err);
+                });
+        }
         buildTableRow(index) {
             const vm = this;
             const tableHeader = document.querySelector('.table-header');
@@ -86,8 +87,8 @@ define('js/app/components/home/homePage', [], function() {
             row.innerHTML = html;
             if (tableHeader.nextElementSibling !== null) {
                 let tableRow = document.querySelectorAll('.table-row');
-                if(index !== 0){
-                    index = index - 1;    
+                if (index !== 0) {
+                    index = index - 1;
                 }
                 tableRow = tableRow[index];
                 vm.insertAfter(row, tableRow);
@@ -95,13 +96,11 @@ define('js/app/components/home/homePage', [], function() {
                 vm.insertAfter(row, tableHeader);
             }
         }
-
         insertAfter(el, referenceNode) {
             if (referenceNode !== null) {
                 referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
             }
         }
-
         noResults(msg) {
             const app = document.querySelector('#App');
             const noReulstsBox = document.createElement('h2');
@@ -120,19 +119,16 @@ define('js/app/components/home/homePage', [], function() {
                 noReulstsBox.remove();
             }, 2400);
         }
-
         clearContent() {
             const noReulstsBox = document.querySelector('.no-results-found');
             const tableHeader = document.querySelector('.table-header');
             const songTable = document.querySelector('.song-table');
             const totalSongs = document.querySelector('.total-songs');
-
             songTable.style.display = 'none';
             totalSongs.style.display = 'none';
             if (noReulstsBox !== null) {
                 document.querySelector('.no-results-found').remove();
             }
-
             if (tableHeader.nextElementSibling !== null) {
                 let tableRow = document.querySelectorAll('.table-row');
                 while (tableHeader.nextElementSibling) {
@@ -140,7 +136,6 @@ define('js/app/components/home/homePage', [], function() {
                 }
             }
         }
-
         displayResults(song, index) {
             const artistName = document.querySelectorAll('.artist-name');
             const album = document.querySelectorAll('.album');
@@ -155,21 +150,37 @@ define('js/app/components/home/homePage', [], function() {
             songName[index].innerHTML = song.trackName;
             songIndex[index].innerHTML = index + 1;
         }
-
         showTotalSongs(show, counts) {
             const totalSongs = document.querySelector('.total-songs');
             const totalSongsItems = document.querySelector('.total-songs-items');
             totalSongs.style.display = show ? 'block' : 'none';
             totalSongsItems.innerHTML = counts;
         }
-
         displaySpinner(display) {
             const spinner = document.querySelector('.iTune-Spinner');
             spinner.style.display = display ? 'block' : 'none';
         }
+        buildUrl(songLimit, term) {
+            if ('URLSearchParams' in window) {
+                let url = '';
+                const searchParams = new URLSearchParams(window.location.search);
+                searchParams.set("limit", songLimit);
+                searchParams.set("term", term);
+                url = '/?' + searchParams.toString();
+                window.history.pushState({}, '', url);
+            }
+        }
+
+        checkUrl() {
+            const vm = this;
+            if (window.location.search !== '' && 'URLSearchParams' in window) {
+                const searchParams = new URLSearchParams(window.location.search);
+                vm.value = searchParams.get("term");
+                const url = vm.searchUrl + 'limit=' + vm.songsLimit + '&term=' + vm.value;
+                vm.myRequest = new Request(url, this.myRequestInit);
+                vm.fetchData(vm.myRequest, vm.songsLimit, vm.value);
+            }
+        }
     }
-
     return new homePage();
-
-
 });
