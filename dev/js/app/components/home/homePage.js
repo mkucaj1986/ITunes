@@ -18,6 +18,7 @@ define('js/app/components/home/homePage', [
                 headers: this.myHeaders
             };
             this.procedRequest = true;
+            this.ascDesc = 1;
         }
         init() {
             const vm = this;
@@ -99,6 +100,18 @@ define('js/app/components/home/homePage', [
                     }
                 })
                 .then(function() {
+                    const sortDesc = document.querySelectorAll('.sort-desc');
+                    const sortAsc = document.querySelectorAll('.sort-asc');
+                    sortDesc.forEach(function(btn, i) {
+                        btn.addEventListener('click', function(e) {
+                            vm.sortFn(i);
+                        }, true);
+                    });
+                    sortAsc.forEach(function(btn, i) {
+                        btn.addEventListener('click', function(e) {
+                            vm.sortFn(i);
+                        }, true);
+                    });
                     vm.procedRequest = true;
                 })
                 .catch(function(err) {
@@ -116,6 +129,66 @@ define('js/app/components/home/homePage', [
                 vm.myRequest = new Request(url, this.myRequestInit);
                 vm.fetchData(vm.myRequest, tunesLimit.songsLimit, vm.value);
             }
+        }
+        sortFn(col) {
+            const vm = this;
+            const rows = document.querySelectorAll('.table-row');
+            const songTable = document.querySelectorAll('.song-table');
+            const tbody = document.querySelector('tbody');
+            col = col + 1;
+            var rlen = rows.length;
+            var arr = new Array(),
+                i, j, cells, clen;
+            // fill the array with values from the table
+            for (i = 0; i < rlen; i++) {
+                cells = rows[i].cells;
+                clen = cells.length;
+                arr[i] = new Array();
+                for (j = 0; j < clen; j++) {
+                    arr[i][j] = cells[j].innerHTML;
+                }
+            }
+            // sort the array by the specified column number (col) and order (asc)
+            arr.sort(function(a, b) {
+                return (a[col] == b[col]) ? 0 : ((a[col] > b[col]) ? vm.ascDesc : -1 * vm.ascDesc);
+            });
+            for (i = 0; i < rlen; i++) {
+                arr[i] = "<td>" + arr[i].join("</td><td>") + "</td>";
+            }
+            tbody.innerHTML = "<tr class='table-row'>" + arr.join("</tr><tr class='table-row'>") + "</tr>";
+            vm.changeStyleIcon();
+            if (vm.ascDesc === 1) {
+                vm.ascDesc = -1;
+            } else {
+                vm.ascDesc = 1;
+            }
+        }
+
+        changeStyleIcon() {
+            const vm = this;
+            const sortAsc = document.querySelectorAll('.sort-asc');
+            const sortDesc = document.querySelectorAll('.sort-desc');
+
+            if (vm.ascDesc === 1) {
+                sortAsc.forEach(function(btn, i) {
+                    btn.style.display = 'none';
+                });
+
+                sortDesc.forEach(function(btn, i) {
+                    btn.style.display = 'block';
+                });
+            }
+
+            if (vm.ascDesc === -1) {
+                sortAsc.forEach(function(btn, i) {
+                    btn.style.display = 'block';
+                });
+
+                sortDesc.forEach(function(btn, i) {
+                    btn.style.display = 'none';
+                });
+            }
+
         }
     }
     return new homePage();

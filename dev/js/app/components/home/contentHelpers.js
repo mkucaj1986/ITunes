@@ -4,7 +4,8 @@ define('js/app/components/home/contentHelpers', [], function() {
         constructor() {}
         clearContent() {
             const noReulstsBox = document.querySelector('.no-results-found');
-            const tableHeader = document.querySelector('.table-header');
+            const tableHeader = document.querySelector('thead');
+            const tableBody = document.querySelector('tbody');
             const songTable = document.querySelector('.song-table');
             const totalSongs = document.querySelector('.total-songs');
             songTable.style.display = 'none';
@@ -13,10 +14,7 @@ define('js/app/components/home/contentHelpers', [], function() {
                 document.querySelector('.no-results-found').remove();
             }
             if (tableHeader.nextElementSibling !== null) {
-                let tableRow = document.querySelectorAll('.table-row');
-                while (tableHeader.nextElementSibling) {
-                    tableHeader.nextElementSibling.remove();
-                }
+                tableBody.remove();
             }
         }
 

@@ -4,7 +4,7 @@ define('js/app/components/home/buildTable', [], function() {
         constructor() {}
         buildTableRow(index) {
             const vm = this;
-            const tableHeader = document.querySelector('.table-header');
+            const tableHeader = document.querySelector('thead');
             const songTable = document.querySelector('.song-table');
             const html = '<td class="song-index"></td><td class="artist-name"></td><td class="album"></td><td class="song-name"></td><td class="preview"><a href="" target="_blank">Preview</a></td><td class="listen"><a href="" target="_blank">Liten</a></td>';
             const row = document.createElement('tr');
@@ -20,6 +20,10 @@ define('js/app/components/home/buildTable', [], function() {
                 vm.insertAfter(row, tableRow);
             } else {
                 vm.insertAfter(row, tableHeader);
+                const org_html = document.querySelector('.table-row').outerHTML;
+                const new_html = "<tbody>" + org_html + "</tbody>";
+                const el = document.querySelector('.table-row');
+                el.outerHTML = new_html; 
             }
         }
 
