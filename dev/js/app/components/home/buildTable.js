@@ -1,5 +1,7 @@
 /*jshint esversion: 6 */
-define('js/app/components/home/buildTable', [], function() {
+define('js/app/components/home/buildTable', [
+    'js/app/components/home/contentHelpers'
+], function(contentHelpers) {
     class homePage {
         constructor() {}
         buildTableRow(index) {
@@ -17,13 +19,13 @@ define('js/app/components/home/buildTable', [], function() {
                     index = index - 1;
                 }
                 tableRow = tableRow[index];
-                vm.insertAfter(row, tableRow);
+                contentHelpers.insertAfter(row, tableRow);
             } else {
-                vm.insertAfter(row, tableHeader);
+                contentHelpers.insertAfter(row, tableHeader);
                 const org_html = document.querySelector('.table-row').outerHTML;
                 const new_html = "<tbody>" + org_html + "</tbody>";
                 const el = document.querySelector('.table-row');
-                el.outerHTML = new_html; 
+                el.outerHTML = new_html;
             }
         }
 
@@ -41,11 +43,7 @@ define('js/app/components/home/buildTable', [], function() {
             songName[index].innerHTML = song.trackName;
             songIndex[index].innerHTML = index + 1;
         }
-        insertAfter(el, referenceNode) {
-            if (referenceNode !== null) {
-                referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
-            }
-        }
+
     }
     return new homePage();
 });

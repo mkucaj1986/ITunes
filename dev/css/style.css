@@ -227,6 +227,7 @@ nav ul li:hover {
 /*ACCORDION*/
 
 .accordionWrapper {
+    display: none;
     padding: 5px;
     background: #fff;
     float: left;
@@ -261,7 +262,7 @@ nav ul li:hover {
     box-sizing: border-box;
 }
 
-h2.accordionItemHeading  {
+h2.accordionItemHeading {
     color: #fff;
     font-size: 14px;
 }
@@ -275,6 +276,17 @@ h2.accordionItemHeading  {
     transform: scaleY(0);
     float: left;
     display: block;
+}
+
+.open .accordionItemContent ul {
+    color: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.open .accordionItemContent ul li a {
+    color: #fff;
 }
 
 .open .accordionItemContent {
@@ -298,8 +310,9 @@ h2.accordionItemHeading  {
     transition: transform 0.4s ease;
     box-sizing: border-box;
 }
+
 .open .accordionItemContent p {
-    color:#fff;
+    color: #fff;
 }
 
 .open .accordionItemHeading {

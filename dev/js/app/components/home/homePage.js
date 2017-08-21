@@ -5,8 +5,9 @@ define('js/app/components/home/homePage', [
     'js/app/components/home/searchParams',
     'js/app/components/home/buildTable',
     'js/app/components/home/contentHelpers',
-    'js/app/components/home/sortTable'
-], function(tunesLimit, Notifications, searchParams, buildTable, contentHelpers, sortTable) {
+    'js/app/components/home/sortTable',
+    'js/app/components/home/groupTable'
+], function(tunesLimit, Notifications, searchParams, buildTable, contentHelpers, sortTable, groupTable) {
     class homePage {
         constructor() {
             this.searchUrl = "https://itunes.apple.com/search?";
@@ -80,6 +81,7 @@ define('js/app/components/home/homePage', [
         fetchData(request, songsLimit, value) {
             const vm = this;
             vm.procedRequest = false;
+            groupTable.clearCategories();
             fetch(request)
                 .then(function(response) {
                     return response.json();
@@ -97,10 +99,14 @@ define('js/app/components/home/homePage', [
                             buildTable.buildTableRow(index);
                             buildTable.displayResults(song, index);
                         });
+                        groupTable.showCategories(true);
+                        groupTable.addCategories(songs);
+                        groupTable.diplayCategories();
                     } else {
                         contentHelpers.displaySpinner(false);
                         Notifications.displayMessage('No Results Found');
                         contentHelpers.showTotalSongs(false);
+                        groupTable.showCategories(false);
                     }
                 })
                 .then(function() {

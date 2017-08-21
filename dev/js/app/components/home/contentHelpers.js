@@ -28,6 +28,12 @@ define('js/app/components/home/contentHelpers', [], function() {
             const spinner = document.querySelector('.iTune-Spinner');
             spinner.style.display = display ? 'block' : 'none';
         }
+
+        insertAfter(el, referenceNode) {
+            if (referenceNode !== null) {
+                referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
+            }
+        }
     }
     return new homePage();
 });
