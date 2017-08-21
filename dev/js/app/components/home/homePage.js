@@ -4,8 +4,9 @@ define('js/app/components/home/homePage', [
     'js/app/components/home/Notifications',
     'js/app/components/home/searchParams',
     'js/app/components/home/buildTable',
-    'js/app/components/home/contentHelpers'
-], function(tunesLimit, Notifications, searchParams, buildTable, contentHelpers) {
+    'js/app/components/home/contentHelpers',
+    'js/app/components/home/sortTable'
+], function(tunesLimit, Notifications, searchParams, buildTable, contentHelpers, sortTable) {
     class homePage {
         constructor() {
             this.searchUrl = "https://itunes.apple.com/search?";
@@ -18,12 +19,13 @@ define('js/app/components/home/homePage', [
                 headers: this.myHeaders
             };
             this.procedRequest = true;
-            this.ascDesc = 1;
+
         }
         init() {
             const vm = this;
             vm.checkUrl();
             vm.addEventListeners();
+            vm.setAccordion();
         }
         addEventListeners() {
             const vm = this;
@@ -46,12 +48,12 @@ define('js/app/components/home/homePage', [
                 tunesLimit.changeSongLimit(evt, this.value);
             });
 
-            window.onpopstate = function(event) {
-                // vm.init();
-                var currentState = history.state;
-                var numberOfEntries = window.history.length;
-                debugger;
-            };
+            // window.onpopstate = function(event) {
+            //     // vm.init();
+            //     var currentState = history.state;
+            //     var numberOfEntries = window.history.length;
+            //     debugger;
+            // };
         }
 
         search() {
@@ -70,6 +72,7 @@ define('js/app/components/home/homePage', [
             } else {
                 contentHelpers.displaySpinner(true);
                 if (vm.procedRequest === true) {
+                    sortTable.ascDesc = {};
                     vm.fetchData(vm.myRequest, tunesLimit.songsLimit, vm.value);
                 }
             }
@@ -83,6 +86,7 @@ define('js/app/components/home/homePage', [
                 })
                 .then(function(songs) {
                     console.log(songs);
+                    // debugger;
                     const songsNumber = songs.resultCount;
                     if (songsNumber > 0) {
                         songs = songs.results;
@@ -100,18 +104,11 @@ define('js/app/components/home/homePage', [
                     }
                 })
                 .then(function() {
-                    const sortDesc = document.querySelectorAll('.sort-desc');
-                    const sortAsc = document.querySelectorAll('.sort-asc');
-                    sortDesc.forEach(function(btn, i) {
-                        btn.addEventListener('click', function(e) {
-                            vm.sortFn(i);
-                        }, true);
-                    });
-                    sortAsc.forEach(function(btn, i) {
-                        btn.addEventListener('click', function(e) {
-                            vm.sortFn(i);
-                        }, true);
-                    });
+                    if (!sortTable.attachedSortListener) {
+                        sortTable.addSortIconClick();
+                    }
+                    sortTable.defaultSortIcon();
+                    sortTable.attachedSortListener = true;
                     vm.procedRequest = true;
                 })
                 .catch(function(err) {
@@ -130,65 +127,22 @@ define('js/app/components/home/homePage', [
                 vm.fetchData(vm.myRequest, tunesLimit.songsLimit, vm.value);
             }
         }
-        sortFn(col) {
-            const vm = this;
-            const rows = document.querySelectorAll('.table-row');
-            const songTable = document.querySelectorAll('.song-table');
-            const tbody = document.querySelector('tbody');
-            col = col + 1;
-            var rlen = rows.length;
-            var arr = new Array(),
-                i, j, cells, clen;
-            // fill the array with values from the table
-            for (i = 0; i < rlen; i++) {
-                cells = rows[i].cells;
-                clen = cells.length;
-                arr[i] = new Array();
-                for (j = 0; j < clen; j++) {
-                    arr[i][j] = cells[j].innerHTML;
+        setAccordion() {
+            const accItem = document.getElementsByClassName('accordionItem');
+            const accHD = document.getElementsByClassName('accordionItemHeading');
+            for (let i = 0; i < accHD.length; i++) {
+                accHD[i].addEventListener('click', toggleItem, false);
+            }
+
+            function toggleItem() {
+                var itemClass = this.parentNode.className;
+                for (let i = 0; i < accItem.length; i++) {
+                    accItem[i].className = 'accordionItem close';
+                }
+                if (itemClass == 'accordionItem close') {
+                    this.parentNode.className = 'accordionItem open';
                 }
             }
-            // sort the array by the specified column number (col) and order (asc)
-            arr.sort(function(a, b) {
-                return (a[col] == b[col]) ? 0 : ((a[col] > b[col]) ? vm.ascDesc : -1 * vm.ascDesc);
-            });
-            for (i = 0; i < rlen; i++) {
-                arr[i] = "<td>" + arr[i].join("</td><td>") + "</td>";
-            }
-            tbody.innerHTML = "<tr class='table-row'>" + arr.join("</tr><tr class='table-row'>") + "</tr>";
-            vm.changeStyleIcon();
-            if (vm.ascDesc === 1) {
-                vm.ascDesc = -1;
-            } else {
-                vm.ascDesc = 1;
-            }
-        }
-
-        changeStyleIcon() {
-            const vm = this;
-            const sortAsc = document.querySelectorAll('.sort-asc');
-            const sortDesc = document.querySelectorAll('.sort-desc');
-
-            if (vm.ascDesc === 1) {
-                sortAsc.forEach(function(btn, i) {
-                    btn.style.display = 'none';
-                });
-
-                sortDesc.forEach(function(btn, i) {
-                    btn.style.display = 'block';
-                });
-            }
-
-            if (vm.ascDesc === -1) {
-                sortAsc.forEach(function(btn, i) {
-                    btn.style.display = 'block';
-                });
-
-                sortDesc.forEach(function(btn, i) {
-                    btn.style.display = 'none';
-                });
-            }
-
         }
     }
     return new homePage();
