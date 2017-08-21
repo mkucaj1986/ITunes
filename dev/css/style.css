@@ -230,7 +230,7 @@ nav ul li:hover {
     padding: 5px;
     background: #fff;
     float: left;
-    width: 20%;
+    width: 15%;
     box-sizing: border-box;
     margin: 0 20px 0 0;
     box-shadow: 0 1.5em 85px 0 rgba(0, 0, 0, 0.2);
@@ -250,7 +250,7 @@ nav ul li:hover {
 
 .accordionItemHeading {
     cursor: pointer;
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 3px 0px;
     padding: 10px;
     background: #2980b9;
     color: #fff;
@@ -259,6 +259,11 @@ nav ul li:hover {
     -moz-border-radius: 3px;
     border-radius: 3px;
     box-sizing: border-box;
+}
+
+h2.accordionItemHeading  {
+    color: #fff;
+    font-size: 14px;
 }
 
 .close .accordionItemContent {
@@ -273,11 +278,11 @@ nav ul li:hover {
 }
 
 .open .accordionItemContent {
-    padding: 20px;
-    background-color: #fff;
+    padding: 12px;
+    background-color: #3498db;
     border: 1px solid #ddd;
     width: 100%;
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 3px 0px;
     display: block;
     -webkit-transform: scaleY(1);
     -o-transform: scaleY(1);
@@ -292,6 +297,9 @@ nav ul li:hover {
     -ms-transition: -ms-transform 0.4s ease;
     transition: transform 0.4s ease;
     box-sizing: border-box;
+}
+.open .accordionItemContent p {
+    color:#fff;
 }
 
 .open .accordionItemHeading {
@@ -308,6 +316,6 @@ nav ul li:hover {
     -moz-border-radius-bottomleft: 0px;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
-    background-color: #bdc3c7;
-    color: #7f8c8d;
+    background-color: #2980b9;
+    color: #fff;
 }
