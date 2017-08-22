@@ -1,12 +1,13 @@
 /*jshint esversion: 6 */
 define('js/app/components/home/groupTable', [
-    'js/app/components/home/contentHelpers'
-], function(contentHelpers) {
+    'js/app/components/home/contentHelpers',
+    'js/app/components/home/buildTable'
+], function(contentHelpers, buildTable) {
     class homePage {
         constructor() {
             this.groupsItems = {};
         }
-        showCategories(display){
+        showCategories(display) {
             const accordion = document.querySelector('.accordionWrapper');
             accordion.style.display = display ? 'block' : 'none';
         }
@@ -42,7 +43,7 @@ define('js/app/components/home/groupTable', [
             vm.groupsItems.albums = data.group(item => item.collectionName);
         }
 
-        diplayCategories() {
+        diplayCategories(data) {
             const vm = this;
             const ul = document.createElement('ul');
             const categoryContent = document.querySelector('.artists-content');
@@ -53,7 +54,7 @@ define('js/app/components/home/groupTable', [
                 const li = document.createElement('li');
                 categoryEl.append(li);
                 const catAnchor = document.querySelectorAll('.artists-content ul li');
-                catAnchor[index].innerHTML = '<a href="">' + item.key + '</a>';
+                catAnchor[index].innerHTML = '<a href="" class="artists-filter">' + item.key + '</a>';
             });
             const catHeader = document.querySelector('.artists-heading');
             catHeader.innerHTML = catHeader.innerHTML + ' ' + vm.groupsItems.artists.length;
@@ -64,10 +65,50 @@ define('js/app/components/home/groupTable', [
                 const li = document.createElement('li');
                 categoryAlbumEl.append(li);
                 const catAnchor = document.querySelectorAll('.albums-content ul li');
-                catAnchor[index].innerHTML = '<a href="">' + item.key + '</a>';
+                catAnchor[index].innerHTML = '<a href="" class="albums-filter">' + item.key + '</a>';
             });
             const catAlbumsHeader = document.querySelector('.albums-heading');
             catAlbumsHeader.innerHTML = catAlbumsHeader.innerHTML + ' ' + vm.groupsItems.albums.length;
+
+            vm.addCategoriesFilter(data);
+        }
+        addCategoriesFilter(data) {
+            const vm = this;
+            const anchorFilter = document.querySelectorAll('.accordionItemContent ul li a');
+            anchorFilter.forEach(function(btn, i) {
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    const filterData = e.target.textContent;
+                    if (this.classList.contains('albums-filter')) {
+                        vm.filterDataCategories(data, 'albums', filterData);
+                    }
+                    if (this.classList.contains('artists-filter')) {
+                        vm.filterDataCategories(data, 'artists', filterData);
+                    }
+                };
+            });
+        }
+
+        filterDataCategories(data, type, filterData) {
+            const tbody = document.querySelector('tbody');
+            let filteredArr = [];
+            if (type === 'albums') {
+                filteredArr = data.filter(filterArr('collectionName', filterData));
+            }
+            if (type === 'artists') {
+                filteredArr = data.filter(filterArr('artistName', filterData));
+            }
+
+            function filterArr(type, filterData) {
+                return function(element) {
+                    return element[type] === filterData;
+                };
+            }
+            contentHelpers.clearContent();
+            filteredArr.forEach(function(song, index) {
+                buildTable.buildTableRow(index);
+                buildTable.displayResults(song, index);
+            });
         }
     }
     return new homePage();

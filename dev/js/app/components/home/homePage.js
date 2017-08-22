@@ -20,7 +20,6 @@ define('js/app/components/home/homePage', [
                 headers: this.myHeaders
             };
             this.procedRequest = true;
-
         }
         init() {
             const vm = this;
@@ -101,7 +100,7 @@ define('js/app/components/home/homePage', [
                         });
                         groupTable.showCategories(true);
                         groupTable.addCategories(songs);
-                        groupTable.diplayCategories();
+                        groupTable.diplayCategories(songs);
                     } else {
                         contentHelpers.displaySpinner(false);
                         Notifications.displayMessage('No Results Found');

@@ -81,14 +81,14 @@ define('js/app/components/home/sortTable', [], function() {
             const sortDesc = document.querySelectorAll('.sort-desc');
             const sortAsc = document.querySelectorAll('.sort-asc');
             sortDesc.forEach(function(btn, i) {
-                btn.addEventListener('click', function(e) {
+                btn.onclick = function(e) {
                     vm.sortFn(i);
-                }, true);
+                };
             });
             sortAsc.forEach(function(btn, i) {
-                btn.addEventListener('click', function(e) {
+                btn.onclick = function(e) {
                     vm.sortFn(i);
-                }, true);
+                };
             });
         }
     }
