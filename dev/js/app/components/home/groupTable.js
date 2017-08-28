@@ -46,26 +46,40 @@ define('js/app/components/home/groupTable', [
         diplayCategories(data) {
             const vm = this;
             const ul = document.createElement('ul');
+            let li = null;
             const categoryContent = document.querySelector('.artists-content');
             const categoryAlbumsContent = document.querySelector('.albums-content');
             categoryContent.append(ul);
             const categoryEl = document.querySelector('.artists-content ul');
+
+            li = document.createElement('li');
+            categoryEl.append(li);
+
+            const allArtists = document.querySelector('.artists-content ul li');
+            allArtists.innerHTML = '<h3 class="all-artists"><a href="" class="artists-filter">all Artists</a></h3>';
             vm.groupsItems.artists.forEach(function(item, index) {
-                const li = document.createElement('li');
-                categoryEl.append(li);
+                li = document.createElement('li');
+                categoryEl.appendChild(li);
                 const catAnchor = document.querySelectorAll('.artists-content ul li');
-                catAnchor[index].innerHTML = '<a href="" class="artists-filter">' + item.key + '</a>';
+                catAnchor[index + 1].innerHTML = '<a href="" class="artists-filter">' + item.key + '</a>';
             });
+
             const catHeader = document.querySelector('.artists-heading');
             catHeader.innerHTML = catHeader.innerHTML + ' ' + vm.groupsItems.artists.length;
             const ull = document.createElement('ul');
             categoryAlbumsContent.append(ull);
             const categoryAlbumEl = document.querySelector('.albums-content ul');
+
+            li = document.createElement('li');
+            categoryAlbumEl.append(li);
+
+            const allALbums = document.querySelector('.albums-content ul li');
+            allALbums.innerHTML = '<h3 class="all-albums"><a href="" class="albums-filter">all Albums</a></h3>';
             vm.groupsItems.albums.forEach(function(item, index) {
-                const li = document.createElement('li');
-                categoryAlbumEl.append(li);
+                li = document.createElement('li');
+                categoryAlbumEl.appendChild(li);
                 const catAnchor = document.querySelectorAll('.albums-content ul li');
-                catAnchor[index].innerHTML = '<a href="" class="albums-filter">' + item.key + '</a>';
+                catAnchor[index + 1].innerHTML = '<a href="" class="albums-filter">' + item.key + '</a>';
             });
             const catAlbumsHeader = document.querySelector('.albums-heading');
             catAlbumsHeader.innerHTML = catAlbumsHeader.innerHTML + ' ' + vm.groupsItems.albums.length;
@@ -75,6 +89,7 @@ define('js/app/components/home/groupTable', [
         addCategoriesFilter(data) {
             const vm = this;
             const anchorFilter = document.querySelectorAll('.accordionItemContent ul li a');
+
             anchorFilter.forEach(function(btn, i) {
                 btn.onclick = function(e) {
                     e.preventDefault();
@@ -90,22 +105,43 @@ define('js/app/components/home/groupTable', [
         }
 
         filterDataCategories(data, type, filterData) {
-            const tbody = document.querySelector('tbody');
+            const vm = this;
+            let count = null;
             let filteredArr = [];
+
+            if (filterData === 'all Artists' || filterData === 'all Albums') {
+                filteredArr = data;
+                count = filteredArr.length;
+                vm.displayFilterData(filteredArr);
+                contentHelpers.showTotalSongs(true, count);
+                return false;
+            }
+
             if (type === 'albums') {
                 filteredArr = data.filter(filterArr('collectionName', filterData));
+                count = filteredArr.length;
+                vm.displayFilterData(filteredArr);
+                contentHelpers.showTotalSongs(true, count);
             }
             if (type === 'artists') {
                 filteredArr = data.filter(filterArr('artistName', filterData));
+                count = filteredArr.length;
+                vm.displayFilterData(filteredArr);
+                contentHelpers.showTotalSongs(true, count);
             }
+
 
             function filterArr(type, filterData) {
                 return function(element) {
                     return element[type] === filterData;
                 };
             }
+
+        }
+
+        displayFilterData(arr) {
             contentHelpers.clearContent();
-            filteredArr.forEach(function(song, index) {
+            arr.forEach(function(song, index) {
                 buildTable.buildTableRow(index);
                 buildTable.displayResults(song, index);
             });

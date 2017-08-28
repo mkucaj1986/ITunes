@@ -8,7 +8,7 @@ define('js/app/components/home/buildTable', [
             const vm = this;
             const tableHeader = document.querySelector('thead');
             const songTable = document.querySelector('.song-table');
-            const html = '<td class="song-index"></td><td class="artist-name"></td><td class="album"></td><td class="song-name"></td><td class="preview"><a href="" target="_blank">Preview</a></td><td class="listen"><a href="" target="_blank">Liten</a></td>';
+            const html = '<td class="song-index"></td><td class="artist-name"></td><td class="album"></td><td class="song-name"></td><td class="preview"><a href="" target="_blank">Preview</a></td><td class="listen"><a href="" target="_blank">Listen</a></td>';
             const row = document.createElement('tr');
             songTable.style.display = 'block';
             row.classList.add('table-row');
